@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.trivyxa.dto.ContactRequest;
 import com.trivyxa.service.EmailService;
 
-@CrossOrigin(origins = "https://trivyxa-businesswebsite-production.up.railway.app")
 @RestController
 @RequestMapping("/api/contact")
+@CrossOrigin(origins = {
+        "https://trivyxa-businesswebsite-production-5766.up.railway.app",
+        "http://localhost:5173"  // optional for local development
+})
 public class ContactController {
 
     @Autowired
@@ -21,7 +24,8 @@ public class ContactController {
     @PostMapping
     public String sendContact(@RequestBody ContactRequest req) {
 
-        // Send full request object to email service
+        System.out.println("📩 Received contact request from frontend: " + req.getEmail());
+
         emailService.sendContactMail(req);
 
         return "Success";
