@@ -11,10 +11,9 @@ import com.trivyxa.dto.ContactRequest;
 import com.trivyxa.service.EmailService;
 
 @RestController
-@RequestMapping("https://trivyxa-businesswebsite-production-5766.up.railway.app/api/contact")
+@RequestMapping("/api/contact")
 @CrossOrigin(origins = {
-        "https://trivyxa-businesswebsite-production-5766.up.railway.app",
-        ""  // optional for local development
+        "https://trivyxa-businesswebsite-production-5766.up.railway.app"
 })
 public class ContactController {
 
