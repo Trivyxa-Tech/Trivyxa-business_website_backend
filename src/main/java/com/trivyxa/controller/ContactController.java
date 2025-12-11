@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.trivyxa.dto.ContactRequest;
 import com.trivyxa.service.EmailService;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://trivyxa-businesswebsite-production-5766.up.railway.app")
 @RestController
 @RequestMapping("/api/contact")
 public class ContactController {
