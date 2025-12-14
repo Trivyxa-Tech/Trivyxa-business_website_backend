@@ -13,7 +13,7 @@ import com.trivyxa.service.EmailService;
 @RestController
 @RequestMapping("/api/contact")
 @CrossOrigin(origins = {
-        "https://trivyxa-businesswebsite-production-5766.up.railway.app/contact"
+        "https://trivyxa-businesswebsite-production-5766.up.railway.app"
 })
 public class ContactController {
 
