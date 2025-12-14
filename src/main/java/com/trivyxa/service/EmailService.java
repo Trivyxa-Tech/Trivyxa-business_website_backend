@@ -17,6 +17,7 @@ public class EmailService {
 
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("trivyxatech@gmail.com");
+        mail.setTo("trivyxatech@gmail.com");
         mail.setSubject("📩 New Project Inquiry – TRIVYXA");
 
         String body =
