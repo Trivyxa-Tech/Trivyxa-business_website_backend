@@ -21,12 +21,16 @@ public class ContactController {
     private EmailService emailService;
 
     @PostMapping
-    public String sendContact(@RequestBody ContactRequest req) {
-
-        System.out.println("📩 Received contact request from frontend: " + req.getEmail());
-
+public ResponseEntity<?> sendContact(@RequestBody ContactRequest req) {
+    try {
         emailService.sendContactMail(req);
-
-        return "Success";
+        return ResponseEntity.ok("Success");
+    } catch (Exception e) {
+        e.printStackTrace(); // shows error in Railway logs
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Email sending failed");
     }
+}
+
 }
