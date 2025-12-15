@@ -1,12 +1,3 @@
-package com.trivyxa.service;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
-
-import com.trivyxa.dto.ContactRequest;
-
 @Service
 public class EmailService {
 
@@ -15,8 +6,14 @@ public class EmailService {
 
     public void sendContactMail(ContactRequest req) {
 
+        if (req == null) {
+            throw new IllegalArgumentException("Request is null");
+        }
+
         SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setFrom("trivyxatech@gmail.com");
+
+        // ⚠ MUST be Brevo-verified sender
+        mail.setFrom("noreply@trivyxa.com");
         mail.setTo("trivyxatech@gmail.com");
         mail.setSubject("📩 New Project Inquiry – TRIVYXA");
 
@@ -25,33 +22,30 @@ public class EmailService {
                 "        🚀 NEW PROJECT INQUIRY\n" +
                 "========================================\n\n" +
 
-                "Dear TRIVYXA Team,\n\n" +
-                "You have received a new project inquiry from your website.\n\n" +
-
-                "----------------------------------------\n" +
                 "👤 CLIENT DETAILS\n" +
-                "----------------------------------------\n" +
-                "• Name: " + req.getName() + "\n" +
-                "• Email: " + req.getEmail() + "\n" +
-                "• Phone: " + (req.getPhone() != null && !req.getPhone().isEmpty() ? req.getPhone() : "Not Provided") + "\n\n" +
+                "• Name: " + safe(req.getName()) + "\n" +
+                "• Email: " + safe(req.getEmail()) + "\n" +
+                "• Phone: " + safe(req.getPhone(), "Not Provided") + "\n\n" +
 
-                "----------------------------------------\n" +
                 "🧩 PROJECT INFORMATION\n" +
-                "----------------------------------------\n" +
-                "• Selected Service: " + (req.getService() != null && !req.getService().isEmpty() ? req.getService() : "Not Selected") + "\n" +
-                "• Estimated Budget: " + (req.getBudget() != null && !req.getBudget().isEmpty() ? req.getBudget() : "Not Specified") + "\n\n" +
+                "• Service: " + safe(req.getService(), "Not Selected") + "\n" +
+                "• Budget: " + safe(req.getBudget(), "Not Specified") + "\n\n" +
 
-                "----------------------------------------\n" +
-                "📝 PROJECT DESCRIPTION\n" +
-                "----------------------------------------\n" +
-                req.getMessage() + "\n\n" +
+                "📝 MESSAGE\n" +
+                safe(req.getMessage(), "No message provided") + "\n\n" +
 
-                "========================================\n" +
-                "       📅 Submitted via TRIVYXA.COM\n" +
-                "========================================\n";
+                "📅 Submitted via TRIVYXA.COM\n";
 
         mail.setText(body);
 
-        mailSender.send(mail);
+        mailSender.send(mail); // 🚀 this will now work
+    }
+
+    private String safe(String value) {
+        return value != null ? value : "";
+    }
+
+    private String safe(String value, String fallback) {
+        return (value != null && !value.isEmpty()) ? value : fallback;
     }
 }
